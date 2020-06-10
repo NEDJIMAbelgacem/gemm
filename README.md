@@ -34,7 +34,7 @@
         - `./build/compare_results 100 200 300`
         - `./build/compare_performance 100 200 300`
     - c_implementation and halide_implementation can take the following CLI arguments in order `c_width c_height a_width alpha beta debug_mode`
-        - c_width, c_height, a_width are the sizes of the matrices generated and used to perform the multiplication. As an example c_width=3, c_height and a_width=2 for you'll get the following A, B and C matrices
+        - c_width, c_height, a_width are the sizes of the matrices generated and used to perform the multiplication. As an example for c_width=3, c_height and a_width=2 you'll get the following A, B and C matrices
         <pre>
             A = |-20 -19| B =|-20 -19 -18|, C = |723 684 645|
                 |-18 -17|    |-17 -16 -15|      |649 614 579|

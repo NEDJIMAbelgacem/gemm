@@ -34,18 +34,16 @@ void general_matrix_multiply(const Buffer<T>& A, const Buffer<T>& B, Buffer<T>& 
     assert(A.width() == B.height() && A.height() == C.height() && B.width() == C.width());
 
     Var x("x"), y("y");
-    Func matrix_prduct("matrix_prduct"), add_matrices("add_matrices");
+    Func gemm;
     RDom r(0, A.width(), "r");
-    matrix_prduct(x, y) = 0.f;
-    matrix_prduct(x, y) += A(r, y) * B(x, r) * alpha;
-    add_matrices(x, y) = matrix_prduct(x, y) + C(x, y) * beta;
-    add_matrices.parallel(y);
+    gemm(x, y) = sum( A(r, y) * B(x, r) ) * alpha + C(x, y) * beta;
+    gemm.parallel(y);
     // add_matrices.print_loop_nest();
 
     // We measure duration here because the compilation of Halide code take much longer for most use cases and 
     // the compilation time of Halide code can be amortized by reusing the same compiled pipeline multiple times
     clock_t start = clock();
-    C = add_matrices.realize(C.width(), C.height());
+    C = gemm.realize(C.width(), C.height());
     clock_t end = clock();
     gemm_duration = (double)(end - start) / CLOCKS_PER_SEC;
 }
